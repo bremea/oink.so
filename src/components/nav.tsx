@@ -16,7 +16,9 @@ const Nav: React.FC<NavProps> = (props) => {
           <a className='opacity-50 hover:underline'>@{props.username}</a>
         </Link>
       ) : (
-        <></>
+        <Link href='/account' passHref>
+          <a className='opacity-50 hover:underline'>Login/Signup</a>
+        </Link>
       )}
     </div>
   );
