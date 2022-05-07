@@ -1,8 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { openGraph } from '@/lib/helper';
-
 // !STARTERCONF Change these default meta
 const defaultMeta = {
   title: 'Next.js + Tailwind CSS + TypeScript Starter',
@@ -34,11 +32,7 @@ export default function Seo(props: SeoProps) {
 
   // Use siteName if there is templateTitle
   // but show full title if there is none
-  meta['image'] = openGraph({
-    description: meta.description,
-    siteName: props.templateTitle ? meta.siteName : meta.title,
-    templateTitle: props.templateTitle,
-  });
+  meta['image'] = 'https://cdn.bremea.com/countbot/logo.png';
 
   return (
     <Head>
