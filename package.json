@@ -20,9 +20,10 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@upstash/redis": "^1.3.1",
     "clsx": "^1.1.1",
     "daisyui": "^2.14.3",
-    "ioredis": "^5.0.4",
+    "jose": "^4.8.1",
     "next": "^12.1.5",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",

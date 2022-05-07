@@ -14,7 +14,7 @@ export default async function phone(req: NextApiRequest, res: NextApiResponse) {
   );
   const code = Math.floor(100000 + Math.random() * 900000);
 
-  await redis.set(`phone:${req.body.phone}`, code);
+  await redis.set(`verify:${req.body.phone}`, code);
   await client.messages.create({
     messagingServiceSid: process.env.TWILIO_MSG_SID,
     to: req.body.phone,
