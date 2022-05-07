@@ -9,8 +9,7 @@ export default async function validate(
   res: NextApiResponse
 ) {
   if (req.method !== 'POST') return error('POST requests only', res);
-  if (!req.body.status) return error('Missing status', res);
-  if (req.body.status.length > 200) return error('Status too long', res);
+  if (!req.body.like) return error('Missing liked status', res);
   const token = req.headers.authorization;
   if (!token) return error('Missing token', res);
   try {
@@ -18,8 +17,7 @@ export default async function validate(
     const status = await redis.get(`status:${username}`);
     if (status === undefined || status === null)
       return error('Invalid auth token', res);
-    await redis.set(`status:${username}`, req.body.status);
-    await redis.del(`likes:${username}`);
+    redis.sadd(`likes:${status}`, username);
     res.status(200).json({ error: false });
   } catch (err) {
     return error('Invalid auth token', res);
