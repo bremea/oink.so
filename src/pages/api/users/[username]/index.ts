@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default function getspace(req: NextApiRequest, res: NextApiResponse) {
+import redis from '@/lib/redis';
+
+export default async function user(req: NextApiRequest, res: NextApiResponse) {
   const username = req.query.username as string;
 
-  res.status(200).json({ username: username });
+  const status = await redis.get(`status:${username}`);
+
+  res.status(200).json({ error: false, status: status });
 }

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import Layout from '@/components/layout/Layout';
@@ -6,15 +7,18 @@ import Nav from '@/components/nav';
 import Seo from '@/components/Seo';
 import Status from '@/components/status';
 
-export default function HomePage() {
-  const [username, setUsername] = React.useState('');
+export default function User() {
+  const [myUsername, setMyUsername] = React.useState('');
   const [status, setStatus] = React.useState('');
+  const router = useRouter();
 
-  React.useEffect(() => {
-    if (window.localStorage.getItem('token')) {
-      getMyInfo();
-    }
-  }, []);
+  const username = router.query.username as string;
+
+  const getUserInfo = React.useCallback(async () => {
+    const req = await fetch(`/api/users/${username}`);
+    const res = await req.json();
+    setStatus(res.status);
+  }, [username]);
 
   const getMyInfo = async () => {
     const req = await fetch('/api/me', {
@@ -24,10 +28,16 @@ export default function HomePage() {
     });
     const res = await req.json();
     if (!res.error) {
-      setUsername(res.username);
-      setStatus(res.status);
+      setMyUsername(res.username);
     }
   };
+
+  React.useEffect(() => {
+    getUserInfo();
+    if (window.localStorage.getItem('token')) {
+      getMyInfo();
+    }
+  }, [getUserInfo]);
 
   return (
     <Layout>
@@ -36,10 +46,10 @@ export default function HomePage() {
       <main>
         <section className='wavy'>
           <div className='layout flex min-h-screen flex-col'>
-            <Nav username={username} />
-            <div className='flex'>
+            <Nav username={myUsername} />
+            <div className='flex h-full w-full items-center justify-center'>
               {username ? (
-                <Status username={username} status={status} edible={true} />
+                <Status username={username} status={status} edible={false} />
               ) : (
                 <></>
               )}
