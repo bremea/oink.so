@@ -68,7 +68,7 @@ export default function HomePage() {
                 })}
               </div>
             </div>
-            <footer className='absolute bottom-2 w-full text-center'>
+            <footer className='w-full text-center'>
               made with ❤️ by{' '}
               <Link href='/brett' passHref>
                 <a className='link'>@brett</a>
