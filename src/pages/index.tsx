@@ -9,11 +9,13 @@ import Status from '@/components/status';
 export default function HomePage() {
   const [username, setUsername] = React.useState('');
   const [status, setStatus] = React.useState('');
+  const [posts, setPosts] = React.useState([]);
 
   React.useEffect(() => {
     if (window.localStorage.getItem('token')) {
       getMyInfo();
     }
+    getPosts();
   }, []);
 
   const getMyInfo = async () => {
@@ -29,6 +31,12 @@ export default function HomePage() {
     }
   };
 
+  const getPosts = async () => {
+    const req = await fetch('/api/posts');
+    const res = await req.json();
+    setPosts(res.posts);
+  };
+
   return (
     <Layout>
       <Seo />
@@ -37,12 +45,22 @@ export default function HomePage() {
         <section className='wavy'>
           <div className='layout min-h-screen flex-col'>
             <Nav username={username} />
-            <div className='flex h-full w-full items-center justify-center'>
+            <div className='flex h-full w-full flex-wrap items-center justify-center'>
               {username ? (
                 <Status username={username} status={status} edible={true} />
               ) : (
                 <></>
               )}
+              {posts.map((post: { username: string; status: string }, i) => {
+                return (
+                  <Status
+                    key={i}
+                    username={post.username}
+                    status={post.status}
+                    edible={false}
+                  />
+                );
+              })}
             </div>
             <footer className='absolute bottom-2 w-full text-center'>
               made with ❤️ by{' '}
