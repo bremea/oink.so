@@ -45,22 +45,28 @@ export default function HomePage() {
         <section className='wavy'>
           <div className='layout min-h-screen flex-col'>
             <Nav username={username} />
-            <div className='flex h-full w-full flex-wrap items-center justify-center'>
-              {username ? (
-                <Status username={username} status={status} edible={true} />
-              ) : (
-                <></>
-              )}
-              {posts.map((post: { username: string; status: string }, i) => {
-                return (
-                  <Status
-                    key={i}
-                    username={post.username}
-                    status={post.status}
-                    edible={false}
-                  />
-                );
-              })}
+            <div className='flex w-full justify-center'>
+              <div className='flex h-full flex-wrap items-center'>
+                {username ? (
+                  <Status username={username} status={status} edible={true} />
+                ) : (
+                  <></>
+                )}
+                {posts.map((post: { username: string; status: string }, i) => {
+                  if (username === post.username) {
+                    return <></>;
+                  } else {
+                    return (
+                      <Status
+                        key={i}
+                        username={post.username}
+                        status={post.status}
+                        edible={false}
+                      />
+                    );
+                  }
+                })}
+              </div>
             </div>
             <footer className='absolute bottom-2 w-full text-center'>
               made with ❤️ by{' '}
