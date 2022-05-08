@@ -12,44 +12,41 @@ export default function User() {
   const [status, setStatus] = React.useState('');
   const [liked, setLiked] = React.useState(false);
   const [likes, setLikes] = React.useState(-1);
-  const [ad, setAd] = React.useState(false);
+  const [, setAd] = React.useState(false);
   const router = useRouter();
 
   const username = router.query.username as string;
 
-  const getUserInfo = React.useCallback(async () => {
-    const req = await fetch(`/api/users/${username}`, {
-      headers: window.localStorage.getItem('token')
-        ? {
-            Authorization: window.localStorage.getItem('token') as string,
-          }
-        : {},
-    });
-    const res = await req.json();
-    setStatus(res.status);
-    setLikes(res.likes);
-    setLiked(res.liked);
-    setAd(res.ad);
-  }, [username]);
-
-  const getMyInfo = async () => {
-    const req = await fetch('/api/me', {
-      headers: {
-        Authorization: window.localStorage.getItem('token') as string,
-      },
-    });
-    const res = await req.json();
-    if (!res.error) {
-      setMyUsername(res.username);
-    }
-  };
-
   React.useEffect(() => {
-    getUserInfo();
-    if (window.localStorage.getItem('token')) {
-      getMyInfo();
-    }
-  }, [getUserInfo]);
+    const runonasync = async () => {
+      if (window.localStorage.getItem('token')) {
+        const req = await fetch('/api/me', {
+          headers: {
+            Authorization: window.localStorage.getItem('token') as string,
+          },
+        });
+        const res = await req.json();
+        if (!res.error) {
+          setMyUsername(res.username);
+        }
+      }
+      if (username) {
+        const req = await fetch(`/api/users/${username}`, {
+          headers: window.localStorage.getItem('token')
+            ? {
+                Authorization: window.localStorage.getItem('token') as string,
+              }
+            : {},
+        });
+        const res = await req.json();
+        setStatus(res.status);
+        setLikes(res.likes);
+        setLiked(res.liked);
+        setAd(res.ad);
+      }
+    };
+    runonasync();
+  }, [username]);
 
   return (
     <Layout>
@@ -67,7 +64,7 @@ export default function User() {
                   likes={likes}
                   liked={liked}
                   edible={false}
-                  ad={ad}
+                  ad={false}
                 />
               ) : (
                 <></>

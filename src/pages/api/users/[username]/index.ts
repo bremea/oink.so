@@ -22,7 +22,7 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
   const status = await redis.get(`status:${username}`);
   const likes = await redis.scard(`likes:${username}`);
   const liked = myusername
-    ? await redis.sismember(`likes:${username}`, myusername)
+    ? (await redis.sismember(`likes:${username}`, myusername)) === 1
     : false;
 
   res.status(200).json({
