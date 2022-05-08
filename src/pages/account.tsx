@@ -34,7 +34,7 @@ export default function Account() {
     const res = await req.json();
     unDisableBtn();
     if (res.error) {
-      setError(res.error);
+      setError(res.message);
     } else {
       setHeader('🔒 We sent you a text');
       setAction('Enter the authentication code below.');

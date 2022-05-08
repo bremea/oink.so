@@ -15,11 +15,15 @@ export default async function phone(req: NextApiRequest, res: NextApiResponse) {
   const code = Math.floor(100000 + Math.random() * 900000);
 
   await redis.set(`verify:${req.body.phone}`, code);
-  await client.messages.create({
-    messagingServiceSid: process.env.TWILIO_MSG_SID,
-    to: req.body.phone,
-    body: `Your oink.so verification is ${code}`,
-  });
+  try {
+    await client.messages.create({
+      messagingServiceSid: process.env.TWILIO_MSG_SID,
+      to: req.body.phone,
+      body: `Your oink.so verification is ${code}`,
+    });
 
-  res.status(200).json({ error: false });
+    return res.status(200).json({ error: false });
+  } catch (e) {
+    return error('Error sending verification code', res);
+  }
 }
