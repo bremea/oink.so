@@ -32,7 +32,13 @@ export default function HomePage() {
   };
 
   const getPosts = async () => {
-    const req = await fetch('/api/posts');
+    const req = await fetch('/api/posts', {
+      headers: window.localStorage.getItem('token')
+        ? {
+            Authorization: window.localStorage.getItem('token') as string,
+          }
+        : {},
+    });
     const res = await req.json();
     setPosts(res.posts);
   };
@@ -53,13 +59,19 @@ export default function HomePage() {
                     status={status}
                     edible={true}
                     likes={-1}
+                    liked={false}
                   />
                 ) : (
                   <></>
                 )}
                 {posts.map(
                   (
-                    post: { username: string; status: string; likes: number },
+                    post: {
+                      username: string;
+                      status: string;
+                      likes: number;
+                      liked: boolean;
+                    },
                     i
                   ) => {
                     if (username === post.username) {
@@ -72,6 +84,7 @@ export default function HomePage() {
                           status={post.status}
                           likes={post.likes}
                           edible={false}
+                          liked={post.liked}
                         />
                       );
                     }

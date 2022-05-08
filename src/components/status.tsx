@@ -1,16 +1,19 @@
 import Link from 'next/link';
 import * as React from 'react';
-import { FiHeart } from 'react-icons/fi';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
 interface StatusProps {
   username: string;
   status: string;
   likes: number;
+  liked: boolean;
   edible: boolean;
 }
 
 const Status: React.FC<StatusProps> = (props) => {
   const [status, setStatus] = React.useState(props.status);
+  const [liked, setLiked] = React.useState(props.liked);
+  const [likes, setLikes] = React.useState(props.likes);
   const [statusChanged, setStatusChanged] = React.useState(false);
 
   const saveStatus = async () => {
@@ -26,6 +29,32 @@ const Status: React.FC<StatusProps> = (props) => {
     setStatusChanged(false);
   };
 
+  const likePost = async () => {
+    setLiked(true);
+    setLikes(likes + 1);
+    await fetch('/api/like', {
+      method: 'POST',
+      headers: {
+        Authorization: window.localStorage.getItem('token') as string,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ like: props.username }),
+    });
+  };
+
+  const unlikePost = async () => {
+    setLikes(likes - 1);
+    setLiked(false);
+    await fetch('/api/unlike', {
+      method: 'POST',
+      headers: {
+        Authorization: window.localStorage.getItem('token') as string,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ like: props.username }),
+    });
+  };
+
   return (
     <div className='m-8 h-64 w-64 overflow-auto rounded-xl bg-neutral p-4 text-left shadow-lg'>
       <div className='flex items-center justify-between'>
@@ -36,9 +65,19 @@ const Status: React.FC<StatusProps> = (props) => {
         </Link>
         {props.likes >= 0 ? (
           <div className='flex items-center'>
-            <FiHeart className='text-sm opacity-50' />
-            <p className='ml-2 text-sm opacity-50'>
-              {props.likes > 0 ? props.likes : ''}
+            {liked ? (
+              <AiFillHeart
+                className='cursor-pointer text-sm text-primary opacity-50 transition-all'
+                onClick={unlikePost}
+              />
+            ) : (
+              <AiOutlineHeart
+                className='cursor-pointer text-sm opacity-50 transition-all hover:text-primary'
+                onClick={likePost}
+              />
+            )}
+            <p className='text-sm opacity-50'>
+              {likes > 0 ? <span className='ml-2'>{likes}</span> : ''}
             </p>
           </div>
         ) : (

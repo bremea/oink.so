@@ -10,16 +10,24 @@ import Status from '@/components/status';
 export default function User() {
   const [myUsername, setMyUsername] = React.useState('');
   const [status, setStatus] = React.useState('');
+  const [liked, setLiked] = React.useState(false);
   const [likes, setLikes] = React.useState(-1);
   const router = useRouter();
 
   const username = router.query.username as string;
 
   const getUserInfo = React.useCallback(async () => {
-    const req = await fetch(`/api/users/${username}`);
+    const req = await fetch(`/api/users/${username}`, {
+      headers: window.localStorage.getItem('token')
+        ? {
+            Authorization: window.localStorage.getItem('token') as string,
+          }
+        : {},
+    });
     const res = await req.json();
     setStatus(res.status);
     setLikes(res.likes);
+    setLiked(res.liked);
   }, [username]);
 
   const getMyInfo = async () => {
@@ -55,6 +63,7 @@ export default function User() {
                   username={username}
                   status={status}
                   likes={likes}
+                  liked={liked}
                   edible={false}
                 />
               ) : (

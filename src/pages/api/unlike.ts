@@ -20,7 +20,7 @@ export default async function validate(
     );
     if (!payload) return error('Invalid auth token', res);
     const username = payload.sub;
-    await redis.sadd(`likes:${req.body.like}`, username);
+    await redis.srem(`likes:${req.body.like}`, username);
     res.status(200).json({ error: false });
   } catch (err) {
     return error('Invalid auth token', res);
