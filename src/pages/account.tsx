@@ -138,7 +138,7 @@ export default function Account() {
                     maxLength={15}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className='input input-bordered w-full max-w-md bg-opacity-0'
+                    className='input input-bordered w-full max-w-md'
                   />
                 ) : step === 1 ? (
                   <input
@@ -149,7 +149,7 @@ export default function Account() {
                     maxLength={6}
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
-                    className='input input-bordered w-full max-w-md bg-opacity-0'
+                    className='input input-bordered w-full max-w-md'
                   />
                 ) : (
                   <input
@@ -160,7 +160,7 @@ export default function Account() {
                     pattern='^[a-zA-Z0-9_]*$'
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className='input input-bordered w-full max-w-md bg-opacity-0'
+                    className='input input-bordered w-full max-w-md'
                   />
                 )}
                 <a
