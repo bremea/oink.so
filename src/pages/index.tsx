@@ -35,9 +35,9 @@ export default function HomePage() {
 
       <main>
         <section className='wavy'>
-          <div className='layout flex min-h-screen flex-col'>
+          <div className='layout min-h-screen flex-col'>
             <Nav username={username} />
-            <div className='flex'>
+            <div className='flex h-full w-full items-center justify-center'>
               {username ? (
                 <Status username={username} status={status} edible={true} />
               ) : (

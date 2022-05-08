@@ -25,7 +25,7 @@ const Status: React.FC<StatusProps> = (props) => {
   };
 
   return (
-    <div className='m-8 h-64 w-64 overflow-auto rounded-xl bg-neutral p-4 text-left'>
+    <div className='m-8 h-64 w-64 overflow-auto rounded-xl bg-neutral p-4 text-left shadow-lg'>
       <Link href={`/${props.username}`} passHref>
         <a className='text-left text-sm opacity-50 hover:underline'>
           @{props.username}
