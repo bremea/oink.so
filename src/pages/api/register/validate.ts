@@ -21,9 +21,11 @@ export default async function validate(
   const username = await redis.get(`phone:${req.body.phone}`);
   if (!username) return res.status(200).json({ error: false });
 
-  const jwt = await new jose.SignJWT({
-    username: req.body.username,
-  })
+  const jwt = await new jose.SignJWT({})
+    .setIssuedAt()
+    .setSubject(username as string)
+    .setIssuer('urn:oinkso:issuer')
+    .setAudience('urn:oinkso:audience')
     .setProtectedHeader({ alg: 'RS256' })
     .sign(await jose.importPKCS8(process.env.JWTKEY as string, 'RSA'));
 

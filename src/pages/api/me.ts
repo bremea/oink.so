@@ -8,7 +8,13 @@ export default async function me(req: NextApiRequest, res: NextApiResponse) {
   const token = req.headers.authorization;
   if (!token) return error('Missing token', res);
   try {
-    const username = jose.decodeJwt(token).username as string;
+    const { payload } = await jose.jwtVerify(
+      token,
+      await jose.importPKCS8(process.env.JWTKEY as string, 'RSA'),
+      { issuer: 'urn:oinkso:issuer', audience: 'urn:oinkso:audience' }
+    );
+    if (!payload) return error('Invalid auth token', res);
+    const username = payload.sub;
     const status = await redis.get(`status:${username}`);
     if (status === undefined || status === null)
       return error('Invalid auth token', res);

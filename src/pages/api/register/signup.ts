@@ -17,6 +17,10 @@ export default async function signup(
   const jwt = await new jose.SignJWT({
     username: req.body.username,
   })
+    .setIssuedAt()
+    .setSubject(req.body.username)
+    .setIssuer('urn:oinkso:issuer')
+    .setAudience('urn:oinkso:audience')
     .setProtectedHeader({ alg: 'RS256' })
     .sign(await jose.importPKCS8(process.env.JWTKEY as string, 'RSA'));
 
