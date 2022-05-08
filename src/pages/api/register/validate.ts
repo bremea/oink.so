@@ -27,7 +27,5 @@ export default async function validate(
     .setProtectedHeader({ alg: 'RS256' })
     .sign(await jose.importPKCS8(process.env.JWTKEY as string, 'RSA'));
 
-  res
-    .status(200)
-    .json({ error: false, token: jwt, key: process.env.JWTKEY as string });
+  res.status(200).json({ error: false, token: jwt });
 }
