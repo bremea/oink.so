@@ -10,6 +10,7 @@ import Status from '@/components/status';
 export default function User() {
   const [myUsername, setMyUsername] = React.useState('');
   const [status, setStatus] = React.useState('');
+  const [likes, setLikes] = React.useState(-1);
   const router = useRouter();
 
   const username = router.query.username as string;
@@ -18,6 +19,7 @@ export default function User() {
     const req = await fetch(`/api/users/${username}`);
     const res = await req.json();
     setStatus(res.status);
+    setLikes(res.likes);
   }, [username]);
 
   const getMyInfo = async () => {
@@ -49,7 +51,12 @@ export default function User() {
             <Nav username={myUsername} />
             <div className='flex h-full w-full items-center justify-center'>
               {username ? (
-                <Status username={username} status={status} edible={false} />
+                <Status
+                  username={username}
+                  status={status}
+                  likes={likes}
+                  edible={false}
+                />
               ) : (
                 <></>
               )}

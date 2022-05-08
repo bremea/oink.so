@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import * as React from 'react';
+import { FiHeart } from 'react-icons/fi';
 
 interface StatusProps {
   username: string;
   status: string;
+  likes: number;
   edible: boolean;
 }
 
@@ -26,11 +28,23 @@ const Status: React.FC<StatusProps> = (props) => {
 
   return (
     <div className='m-8 h-64 w-64 overflow-auto rounded-xl bg-neutral p-4 text-left shadow-lg'>
-      <Link href={`/${props.username}`} passHref>
-        <a className='text-left text-sm opacity-50 hover:underline'>
-          @{props.username}
-        </a>
-      </Link>
+      <div className='flex items-center justify-between'>
+        <Link href={`/${props.username}`} passHref>
+          <a className='text-left text-sm opacity-50 hover:underline'>
+            @{props.username}
+          </a>
+        </Link>
+        {props.likes >= 0 ? (
+          <div className='flex items-center'>
+            <FiHeart className='text-sm opacity-50' />
+            <p className='ml-2 text-sm opacity-50'>
+              {props.likes > 0 ? props.likes : ''}
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
       {props.edible ? (
         <textarea
           className='textarea mt-1 h-48 w-full bg-neutral p-0'

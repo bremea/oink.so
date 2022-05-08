@@ -48,24 +48,35 @@ export default function HomePage() {
             <div className='flex w-full justify-center'>
               <div className='flex h-full flex-wrap items-center'>
                 {username ? (
-                  <Status username={username} status={status} edible={true} />
+                  <Status
+                    username={username}
+                    status={status}
+                    edible={true}
+                    likes={-1}
+                  />
                 ) : (
                   <></>
                 )}
-                {posts.map((post: { username: string; status: string }, i) => {
-                  if (username === post.username) {
-                    return <></>;
-                  } else {
-                    return (
-                      <Status
-                        key={i}
-                        username={post.username}
-                        status={post.status}
-                        edible={false}
-                      />
-                    );
+                {posts.map(
+                  (
+                    post: { username: string; status: string; likes: number },
+                    i
+                  ) => {
+                    if (username === post.username) {
+                      return <></>;
+                    } else {
+                      return (
+                        <Status
+                          key={i}
+                          username={post.username}
+                          status={post.status}
+                          likes={post.likes}
+                          edible={false}
+                        />
+                      );
+                    }
                   }
-                })}
+                )}
               </div>
             </div>
             <footer className='w-full text-center'>

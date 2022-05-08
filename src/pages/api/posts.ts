@@ -9,6 +9,7 @@ export default async function posts(req: NextApiRequest, res: NextApiResponse) {
     sendPosts.push({
       username: post.replace('status:', ''),
       status: await redis.get(post),
+      likes: await redis.llen(`likes:${post.replace('status:', '')}`),
     });
   }
   return res.status(200).json({ error: false, posts: sendPosts });
