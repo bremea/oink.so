@@ -60,6 +60,7 @@ export default function HomePage() {
                     edible={true}
                     likes={-1}
                     liked={false}
+                    ad={false}
                   />
                 ) : (
                   <></>
@@ -71,6 +72,7 @@ export default function HomePage() {
                       status: string;
                       likes: number;
                       liked: boolean;
+                      ad: boolean;
                     },
                     i
                   ) => {
@@ -85,6 +87,7 @@ export default function HomePage() {
                           likes={post.likes}
                           edible={false}
                           liked={post.liked}
+                          ad={post.ad}
                         />
                       );
                     }

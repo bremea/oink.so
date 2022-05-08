@@ -24,6 +24,7 @@ export default async function posts(req: NextApiRequest, res: NextApiResponse) {
     sendPosts.push({
       username: post.replace('status:', ''),
       status: await redis.get(post),
+      ad: false,
       likes: await redis.scard(`likes:${post.replace('status:', '')}`),
       liked: username
         ? await redis.sismember(
@@ -33,5 +34,7 @@ export default async function posts(req: NextApiRequest, res: NextApiResponse) {
         : false,
     });
   }
+  sendPosts.unshift({ ad: true });
+  sendPosts.push({ ad: true });
   return res.status(200).json({ error: false, posts: sendPosts });
 }

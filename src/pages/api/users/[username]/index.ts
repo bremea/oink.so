@@ -25,7 +25,11 @@ export default async function user(req: NextApiRequest, res: NextApiResponse) {
     ? await redis.sismember(`likes:${username}`, myusername)
     : false;
 
-  res
-    .status(200)
-    .json({ error: false, status: status, likes: likes, liked: liked });
+  res.status(200).json({
+    error: false,
+    status: status,
+    likes: likes,
+    liked: liked,
+    ad: false,
+  });
 }

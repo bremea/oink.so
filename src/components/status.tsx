@@ -8,10 +8,12 @@ interface StatusProps {
   likes: number;
   liked: boolean;
   edible: boolean;
+  ad: boolean;
 }
 
 const Status: React.FC<StatusProps> = (props) => {
   const [status, setStatus] = React.useState(props.status);
+  const [username, setUsername] = React.useState(props.username);
   const [liked, setLiked] = React.useState(props.liked);
   const [likes, setLikes] = React.useState(props.likes);
   const [statusChanged, setStatusChanged] = React.useState(false);
@@ -55,12 +57,30 @@ const Status: React.FC<StatusProps> = (props) => {
     });
   };
 
+  if (props.ad && !username) {
+    setUsername('ad');
+    setStatus(
+      'This ad could be yours! Reach out to us at contact@oink.so for details.'
+    );
+  }
+
   return (
-    <div className='m-8 h-64 w-64 overflow-auto rounded-xl bg-neutral p-4 text-left shadow-lg'>
+    <div
+      className={`m-8 h-64 w-64 overflow-auto rounded-xl bg-neutral p-4 text-left shadow-lg ${
+        props.ad ? 'border-2 border-primary' : 'border-none'
+      }`}
+    >
       <div className='flex items-center justify-between'>
-        <Link href={`/${props.username}`} passHref>
+        <Link
+          href={
+            (props.ad && props.username) || !props.ad
+              ? `/${username}`
+              : `mailto:contact@oink.so`
+          }
+          passHref
+        >
           <a className='text-left text-sm opacity-50 hover:underline'>
-            @{props.username}
+            @{username}
           </a>
         </Link>
         {props.likes >= 0 ? (
@@ -98,7 +118,7 @@ const Status: React.FC<StatusProps> = (props) => {
           {props.status}
         </textarea>
       ) : (
-        <p className='break-word mt-1'>{props.status}</p>
+        <p className='break-word mt-1'>{status}</p>
       )}
     </div>
   );

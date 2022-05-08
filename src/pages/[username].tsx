@@ -12,6 +12,7 @@ export default function User() {
   const [status, setStatus] = React.useState('');
   const [liked, setLiked] = React.useState(false);
   const [likes, setLikes] = React.useState(-1);
+  const [ad, setAd] = React.useState(false);
   const router = useRouter();
 
   const username = router.query.username as string;
@@ -28,6 +29,7 @@ export default function User() {
     setStatus(res.status);
     setLikes(res.likes);
     setLiked(res.liked);
+    setAd(res.ad);
   }, [username]);
 
   const getMyInfo = async () => {
@@ -65,6 +67,7 @@ export default function User() {
                   likes={likes}
                   liked={liked}
                   edible={false}
+                  ad={ad}
                 />
               ) : (
                 <></>
