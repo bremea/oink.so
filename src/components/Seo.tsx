@@ -9,8 +9,7 @@ const defaultMeta = {
   url: 'https://oink.so',
   type: 'website',
   robots: 'follow, index',
-  /** No need to be filled, will be populated with openGraph function */
-  image: '',
+  image: 'https://oink.so/logobg.png',
 };
 
 type SeoProps = {
